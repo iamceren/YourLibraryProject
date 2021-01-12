@@ -2,85 +2,103 @@
 
 @{
     ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Registration</h2>
+@Styles.Render("~/login/css")
+@Styles.Render("~/login/js")
 
-@if (Convert.ToBoolean(ViewBag.Status) == true)
-{
-    if (ViewBag.Message != "")
-    {
-        <div class="alert alert-success">
-            <strong>SUCCES!</strong>@ViewBag.Message
+
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form-title" style="background-image: url(/Content/images/book-1.jpg)">
+                <span class="login100-form-title-1">
+                    Sign Up
+                </span>
+            </div>
+            @if (Convert.ToBoolean(ViewBag.Status) == true)
+            {
+                if (ViewBag.Message != "")
+                {
+                    <div class="alert alert-success">
+                        <strong>SUCCESS!</strong>@ViewBag.Message
+                    </div>
+                }
+            }
+            else
+            {
+                using (Html.BeginForm("Registration", "User", null, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="login100-form validate-form" style="margin-bottom: -50px">
+                        <div class="wrap-input100 validate-input m-b-26">
+                            <span class="label-input100">Name</span>
+                            <div class="form-group" style="margin-bottom:0px; height:32px">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "height:30px" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                <span class="focus-input100"></span>
+                            </div>
+                        </div>
+
+                        <div class="wrap-input100 validate-input m-b-26">
+                            <span class="label-input100">Surname</span>
+                            <div class="form-group" style="margin-bottom:0px; height:32px">
+                                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", style = "height:30px" } })
+                                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                                <span class="focus-input100"></span>
+                            </div>
+                        </div>
+
+                        <div class="wrap-input100 validate-input m-b-26">
+                            <span class="label-input100">Email</span>
+                            <div class="form-group" style="margin-bottom:0px; height:32px">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", style = "height:30px" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                <span class="focus-input100"></span>
+                            </div>
+                        </div>
+
+                        <div class="wrap-input100 validate-input m-b-18">
+                            <span class="label-input100">Password</span>
+                            <div class="form-group" style="margin-bottom:0px; height:32px">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", style = "height:30px" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                <span class="focus-input100"></span>
+                            </div>
+                        </div>
+
+                        <div class="wrap-input100 validate-input m-b-18">
+                            <span class="label-input100">Confirm Password</span>
+                            <div class="form-group" style="margin-bottom:0px; height:32px">
+                                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", style = "height:30px" } })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                <span class="focus-input100"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-6">
+                                    <input type="submit" value="Sign Up" class="btn btn-default" />
+                                </div>
+                                <div class="col-md-offset-2 col-md-6">
+                                    @Html.ActionLink("Back to Login Page", "Login", "User")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>FAILED!</strong>@ViewBag.Message
+                        </div>
+                    }
+                }
+            }
         </div>
-    }
-}
-else
-{
-    using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <h4>User</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-
-        if (ViewBag.Message != null)
-        {
-            <div class="alert alert-danger">
-                <strong>FAILED!</strong>@ViewBag.Message
-            </div>
-        }
-    }
-}
-<div>
-    @Html.ActionLink("Back to Login Page", "Login", "User")
+    </div>
 </div>

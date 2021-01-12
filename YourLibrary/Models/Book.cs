@@ -11,25 +11,30 @@ namespace YourLibrary.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Book
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Book()
         {
-            this.Library = new HashSet<Library>();
+            this.Users = new HashSet<User>();
         }
     
         public int Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public int Category { get; set; }
+
+        [Display(Name = "Content Summary")]
         public string ContentSummary { get; set; }
         public string Path { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Publish Date")]
         public Nullable<System.DateTime> PublishDate { get; set; }
     
         public virtual Category Category1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Library> Library { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

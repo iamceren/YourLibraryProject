@@ -1,31 +1,46 @@
-﻿@{
+﻿@using YourLibrary.Models;
+@{
     ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<section class="slider_section" style="margin-top:-110px">
+    <div id="myCarousel" class="carousel slide banner-main" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="first-slide" src="~/Content/images/banner.jpg" alt="First slide">
+                <div class="container">
+                    <div class="carousel-caption relative">
+                        <h1>The Best Libraries That<br> Every Book Lover Must<br> Visit!</h1>
+                        <p>
+                            “In a good bookroom you feel in some mysterious <br /> way that you are absorbing the wisdom contained <br /> in all the books through your skin,<br /> without even opening them.”<br />
+                            ― Mark Twain
+                        </p>
+                        @{
+                            User user = Session["mydata"] as User;
+                        }
+                        @if (user != null)
+                        {
+                            if (user.Role == true)
+                            {
+                                <div class="button_section"> <a class="main_bt" href="~/Books/Index">Read Books</a>  </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="button_section"> <a class="main_bt" href="~/User/Login">Read Books</a>  </div>
+                        }
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+
+                        <ul class="locat_icon">
+                            <li> <a href="#"><img src="~/Content/icon/facebook.png"></a></li>
+                            <li> <a href="#"><img src="~/Content/icon/Twitter.png"></a></li>
+                            <li> <a href="#"><img src="~/Content/icon/linkedin.png"></a></li>
+                            <li> <a href="#"><img src="~/Content/icon/instagram.png"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+</section>

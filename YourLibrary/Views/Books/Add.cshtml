@@ -1,0 +1,60 @@
+﻿@model IEnumerable<YourLibrary.Models.Book>
+
+@{
+    ViewBag.Title = "Library";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <h2>Library</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentSummary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PublishDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category1.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContentSummary)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Path)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PublishDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category1.Name)
+        </td>
+        <td>
+            <a href="@Url.Action("GetBook", new { id =  item.Id})" target="_blank">Open Book</a>
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+}
+
+</table>

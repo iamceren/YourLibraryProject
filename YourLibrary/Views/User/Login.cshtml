@@ -2,62 +2,73 @@
 
 @{
     ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Login</h2>
+@Styles.Render("~/login/css")
+@Styles.Render("~/login/js")
 
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        @if (ViewBag.Message != "")
-        {
-            <div class="text-danger">@ViewBag.Message</div>
-        }
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100" style="margin-top:-60px">
+            <div class="login100-form-title" style="background-image: url(/Content/images/book-1.jpg)">
+                <span class="login100-form-title-1">
+                    Sign In
+                </span>
             </div>
-        </div>
+            <div class="login100-form validate-form" style="margin-bottom: -50px">
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+                        <span class="label-input100">Email</span>
+                        <div class="form-group" style="margin-bottom:0px; height:32px">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", style = "height:30px" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            <span class="focus-input100"></span>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.RememberMe, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.RememberMe)
-                    @Html.ValidationMessageFor(model => model.RememberMe, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
+                    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                    <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                        <span class="label-input100">Password</span>
+                        <div class="form-group" style="margin-bottom:0px; height:32px">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", style = "height:30px" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            <span class="focus-input100"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex-sb-m w-full p-b-30">
+                        <div class="contact100-form-checkbox">
+                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                            <label class="label-checkbox100" for="ckb1">
+                                Remember me
+                            </label>
+                        </div>
+                    </div>
+
+                    if (ViewBag.Message != "")
+                    {
+                        <div class="text-danger" style="color:red">@ViewBag.Message</div>
+                    }
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Login" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                    <div>
+                        @Html.ActionLink("Click for sing up!", "Registration")
+                    </div>
+
+                }
+
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Click for sing up!", "Registration")
 </div>
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

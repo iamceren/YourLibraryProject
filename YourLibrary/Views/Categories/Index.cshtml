@@ -4,26 +4,28 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="Library" style="padding: 20px 0px">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="titlepage" style="padding-bottom: 0px">
+                    <h2 style="font-size: 30px">Categories <strong class="black" style="font-size: 30px">Page </strong></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="text-align: -webkit-center">
+    <table class="table" style="width: 80%; text-align: center; font-size:18px">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Name.ToString(), "Details", new { id = item.Id }, new { @style= "color:#b32137" })
+                </td>
+            </tr>
+        }
 
-<h2>Index</h2>
+    </table>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.Name.ToString(), "Details", new { id = item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+</div>

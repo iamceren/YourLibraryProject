@@ -1,27 +1,66 @@
-﻿@model YourLibrary.Models.Category
+﻿@model IEnumerable<YourLibrary.Models.Book>
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>@Model.Name Category</h4>
-    <hr />
-    <dl class="dl-horizontal">
 
-        @foreach (var book in Model.Book)
-        {
-            <tr>
-                <td>@book.Title</td>
-                <td>@book.Author</td>
-            </tr>
-        }
 
-    </dl>
+<div class="Library" style="padding: 20px 0px">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="titlepage" style="padding-bottom: 0px">
+                    <h2 style="font-size: 30px">@Model.FirstOrDefault().Category1.Name <strong class="black" style="font-size: 30px">Library </strong></h2>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div style="text-align: -webkit-center">
+    @using (Html.BeginForm("Details", "Categories", FormMethod.Get))
+    {
+        <p>
+            Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string) <input type="submit" value="Search" />
+        </p>
+
+        <table class="table" style="width: 80%; text-align: center">
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Author
+                </th>
+                <th>
+                    PublishDate
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => book.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => book.Author)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => book.PublishDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", "Books",new { id = book.Id }, new { @style = "color: #b32137" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+    <p>
+    @Html.ActionLink("Back to List", "Index", new { @style = "color: #b32137" })
+    </p>
+</div>

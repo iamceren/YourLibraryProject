@@ -11,10 +11,21 @@ using YourLibrary.Models;
 
 namespace YourLibrary.Controllers
 {
+    
     public class UserController : Controller
     {
+        private YourLibraryDBEntities db = new YourLibraryDBEntities();
+
+        [Authorize]
+        public ActionResult Index()
+        {
+            var users = db.Users;
+            return View(users.ToList());
+        }
+
         //GET Login
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
@@ -23,17 +34,21 @@ namespace YourLibrary.Controllers
         //POST Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(User user)
+        [AllowAnonymous]
+        public ActionResult Login(LoginModel user)
         {
             string message = "";
-            using (YourLibraryDBEntities dc = new YourLibraryDBEntities())
+            using (db)
             {
-                var v = dc.User.Where(a => a.Email == user.Email).FirstOrDefault(); //select * from User where Email = user.Email
-
+                var v = db.Users.Where(a => a.Email == user.Email).FirstOrDefault(); //select * from User where Email = user.Email
+                
                 if (v != null)
                 {
                     if (v.Password == user.Password)
                     {
+                        FormsAuthentication.SetAuthCookie(v.Email, false);
+                        var data = v;
+                        Session["mydata"] = data;
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -54,6 +69,7 @@ namespace YourLibrary.Controllers
 
         //GET Registration
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Registration()
         {
             return View();
@@ -62,6 +78,7 @@ namespace YourLibrary.Controllers
         //POST Registration
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult Registration(User user)
         {
             string message = "";
@@ -78,7 +95,7 @@ namespace YourLibrary.Controllers
 
                 using (YourLibraryDBEntities dc = new YourLibraryDBEntities())
                 {
-                    dc.User.Add(user);
+                    dc.Users.Add(user);
                     dc.SaveChanges();
                     message = "Registration is succesfully done!";
                     status = true;
@@ -99,7 +116,7 @@ namespace YourLibrary.Controllers
         {
             using (YourLibraryDBEntities dc = new YourLibraryDBEntities())
             {
-                var v = dc.User.Where(a => a.Email == email).FirstOrDefault();  //select * from User where Email = email
+                var v = dc.Users.Where(a => a.Email == email).FirstOrDefault();  //select * from User where Email = email
                 if (v != null)
                 {
                     return true;
@@ -110,5 +127,34 @@ namespace YourLibrary.Controllers
                 }
             }
         }
+
+        //void RememberMe(LoginModel user)
+        //{
+        //    #region Remember Me section
+        //    int timeout = user.RememberMe ? 525600 : 20; //If RememberMe == true then timeout = 525600 else timeout = 20
+        //    var ticket = new FormsAuthenticationTicket(user.Email, user.RememberMe, timeout);
+        //    string encrypted = FormsAuthentication.Encrypt(ticket);
+        //    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+        //    cookie.Expires = DateTime.Now.AddMinutes(timeout);
+        //    cookie.HttpOnly = true;
+        //    Response.Cookies.Add(cookie);
+        //    #endregion
+        //}
+        public ActionResult Delete(int? id)
+        {
+            User user = db.Users.Find(id);
+            _ = db.Users.Remove(user);
+            _ = db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [AllowAnonymous]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon();
+            return RedirectToAction("Login", "User");
+        }
+
     }
 }

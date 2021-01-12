@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -15,34 +16,54 @@ namespace YourLibrary.Controllers
         private YourLibraryDBEntities db = new YourLibraryDBEntities();
 
         // GET: Libraries
-        public ActionResult Index()
+        public ActionResult Index(string currentFilter, string searchString)
         {
             var user = Session["mydata"] as User;
-            var library = db.Library.Where(l => l.UserId == user.Id);
-            var books = library.Select(l => l.Book);
-            return View(books.ToList());
+            var library = db.Users.SelectMany(i => i.Books).Include(b => b.Category1);
+
+            if (searchString != null) { }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                library = library.Where(p => p.Title.Contains(searchString) || p.Author.Contains(searchString));
+            }
+
+            return View(library.ToList());
         }
 
-        public ActionResult Add(int id)
+        public ActionResult GetBook(int id)
         {
-            var context = new YourLibraryDBEntities();
-            var user = Session["mydata"] as User;
-            var book = (from b in context.Book
-                        select b).FirstOrDefault(i => i.Id == id);
-            var library = (from l in context.Library
-                           select l).FirstOrDefault(i => i.UserId == user.Id);
-            library.Book.Add(book);
-            context.SaveChanges();
-            return RedirectToAction("Index", "Libraries");
+            Book book = db.Books.Find(id);
+            string path = Path.Combine(@"C:\Users\aktas\source\repos\YourLibrary\YourLibrary\uploads\", book.Title + ".pdf");
+            return File(path, "application/pdf");
         }
 
-        // POST: Libraries/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Book book = db.Books.Find(id);
+            if (book == null)
+            {
+                return HttpNotFound();
+            }
+            return View(book);
+        }
+
         public ActionResult Delete(int id)
         {
-            Book book = db.Book.Find(id);
-            db.Book.Remove(book);
+            User user = Session["mydata"] as User;
+            Book book = db.Books.Find(id) ;
+            var library = db.Users.Find(user.Id);
+            library.Books.Remove(book);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -1,0 +1,40 @@
+﻿@using YourLibrary.Models;
+@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    User user = Session["mydata"] as User;
+}
+@if (user.Payment == true)
+{
+    <div class="Library" style="margin-top: 300px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="titlepage">
+                        <h2>Good <strong class="black">News :)</strong></h2>
+                        <span>You have no payments to be made in the near future. Hurray !!!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="Library" style="margin-top: 300px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="titlepage">
+                        <h2>Bad <strong class="black">News :(</strong></h2>
+                        <span>You must pay to access the books.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
